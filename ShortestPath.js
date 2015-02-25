@@ -1,6 +1,6 @@
 ﻿'use strict';
 
-var ShortestPath = function(gridSize, startPos, endPos) {
+var ShortestPath = function(gridSize) {
     this.FLOOR_FLAG = 0;
     this.START_FLAG = 1;
     this.FINISH_FLAG = 2;
@@ -8,8 +8,6 @@ var ShortestPath = function(gridSize, startPos, endPos) {
     this.grid = [];
     this.gridSize = gridSize;
     this.maxCellIterations = 240 * gridSize * gridSize;
-    this.startPos = startPos;
-    this.endPos = endPos;
     for (var y = 0; y < gridSize; y++) {
         var row = [];
         for (var x = 0; x < gridSize; x++) {
@@ -26,22 +24,54 @@ var ShortestPath = function(gridSize, startPos, endPos) {
 
     this.iterations = 0;
 
-    this.grid[startPos.y][startPos.x] = {
+
+};
+
+ShortestPath.prototype.fillWalls = function(){
+    this.addWalls([{ x: 2, y: 1 },
+        { x: 3, y: 3 },{ x: 0, y: 5 },
+        { x: 6, y: 4 },{ x: 6, y: 5 },
+        { x: 7, y: 5 },{ x: 8, y: 5 },
+        { x: 6, y: 6 },{ x: 5, y: 6 },
+        { x: 4, y: 6 },{ x: 3, y: 6 },
+        { x: 3, y: 7 },{ x: 2, y: 7 },
+        { x: 4, y: 9 },{ x: 7, y: 10 },
+        { x: 7, y: 11 },{ x: 6, y: 10 },
+        { x: 6, y: 11 }, { x: 15, y: 15 },
+        { x: 10, y: 11 }, { x: 14, y: 5 },
+        this.getRandomFloorPos(), this.getRandomFloorPos(),
+        this.getRandomFloorPos(), this.getRandomFloorPos(),
+        this.getRandomFloorPos(), this.getRandomFloorPos()]);
+};
+
+ShortestPath.prototype.setStartPos = function(pos){
+    this.startPos = pos;
+    this.grid[this.startPos.y][this.startPos.x] = {
         flag: this.START_FLAG,
         distanceFromStart: 0,
         hasDistance: false,
         iterations: 0
     };
+}
 
-    this.grid[endPos.y][endPos.x] = {
+ShortestPath.prototype.setEndPos = function(pos){
+    this.endPos = pos;
+    this.grid[this.endPos.y][this.endPos.x] = {
         flag: this.FINISH_FLAG,
         distanceFromStart: 0,
         hasDistance: false,
         iterations: 0
     };
+}
 
-
-};
+ShortestPath.prototype.getRandomFloorPos = function(){
+    while(true){
+        var pos = {x: 1 + Math.floor(Math.random() * (this.gridSize - 1)), y : 1 + Math.floor(Math.random() * (this.gridSize - 1))};
+        if (this.grid[pos.y][pos.x].flag == this.FLOOR_FLAG){
+            return pos;
+        }
+    }
+}
 
 ShortestPath.prototype.addWalls = function(walls) {
     var self = this;

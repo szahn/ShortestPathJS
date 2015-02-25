@@ -9,26 +9,10 @@
     <script type="text/javascript">
         'use strict';
         $(function() {
-            var shortestPath = new ShortestPath(18, { x: 1, y: 1 }, { x: 11, y: 14 });
-            shortestPath.addWalls([{ x: 2, y: 1 },
-                { x: 3, y: 3 },
-                { x: 0, y: 5 },
-                { x: 6, y: 4 },
-                { x: 6, y: 5 },
-                { x: 7, y: 5 },
-                 { x: 8, y: 5 },
-                { x: 6, y: 6 },
-                { x: 5, y: 6 },
-                { x: 4, y: 6 },
-                { x: 3, y: 6 },
-                { x: 3, y: 7 },
-                { x: 2, y: 7 },
-                { x: 4, y: 9 },
-                { x: 7, y: 10 },
-                { x: 7, y: 11 },
-                { x: 6, y: 10 },
-                { x: 6, y: 11 }
-            ]);
+            var shortestPath = new ShortestPath(18);
+            shortestPath.fillWalls();
+            shortestPath.setStartPos(shortestPath.getRandomFloorPos());
+            shortestPath.setEndPos(shortestPath.getRandomFloorPos());
 
             shortestPath.start();
             shortestPath.render("grid");
